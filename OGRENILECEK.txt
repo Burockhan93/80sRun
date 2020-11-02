@@ -1,0 +1,61 @@
+1-) Arabayi ayri bir class yapip hiz donme suspansiyon vb verileri araba classindan alacaz
+
+2-) kamera daha iyi gecis nasil saglar. efektif kod nasil yazilir **** (Lerp metodu)
+
+3-) Kamra alt üst ile birlikte nasil arabaya fix kalir *********Transform.LookAt()
+
+4-) Ikinci Camera ve Firstpersoncamera belki.  *********Yapildi 
+	2 audio Listener sikintisi cözülmeli
+
+5-) Enemy spawn edecez veya engel bunlarla ilgili calisma. engel yeine ziplama rampasi da olur lan.
+	Ayrica arabayi hizlandirma ve nitro.  ****yapildi 15.08.2020
+
+6-) Sanatsal tasarim arastirma ve calisma
+
+7-) Araba ve engellerin sekilleri asset store mu yoksa blenderdan mi yapalim? asset storeden aldik cogunu ****** 17.08.2020
+
+8-) Bütün yolu yapmak zorunda miyim random bir sekilde yollar gelemez mi? 
+
+9-) Araba kenara cok carparsa z ekseninde kayma yasiyor yani baktigi yön degisiyor onu da düzeltecek bir yöntem bulmak gerek.***yapildi 14.08.2020
+
+10-) Dotween ve Zenject bakilacak!!!!Daha sonra Obi (sivi ve ip mekanigi akiskan nesnler)ona da bakilacak.
+
+11-) Ana Menü/Game Over menü gecisleri vs. ögrenilecek******--15/16.08.2020 kismen yapildi. GameOver dan sonra retry gibi birsey olmasi lazim. o da geldi
+	******** 18.08.2020
+
+12-) Araba arkadan neon isigi cikaracak onun bir yöntemi var. Neon diye hazir asset indirdim ona bak.****** bakildi Trailrenderer 19.08.2020
+
+13-) dusman arabalar ses sey yapiyo sonucta onu oyuna eklemek gerek. 3d ses efekti yani.
+
+14-) Texte yanma sönme efekti
+
+15-)kamera bazen cok geride kaliyor onu ayarlamamiz gerek o kadr uzak kalmasin. yapildi********* 27.08.2020
+
+16-)Pause the game **** halledildi 16.08.2020
+
+17-) bir objenin childobjeleri scriptte nasil cagrilip kontrol edilir.************** Bircok yöntemi var kismen yapildi 20.08.2020
+
+18-) arabanin arkasina neon nitro modundayken
+     daha güzel bir harita yapmak gerek. harita en az 2 3 dakika dayanmali. 
+     harita icinde belli basli yerlere isiklandirma gerek.
+     post process ile birseykler eklenebilir haritayi cok katli yaptik mesela oralara da ulasim imkani olmali
+
+19-) text objesi nasil hareket edecek **** 20.08.2020 halledildi ama lerp olmadi
+
+20-) puanlari harcayacak güclendiriciler lazim. crashteki yildirim topu geldi aklima o olabilir. yaptik simdi onu 20.08.2020 partical sisteme bakip düzeltmeler 
+	ekleyycem.93
+
+21-) Dusmanlar hep soldaki bariyerden x i nirengi aliyor onu da bir degistirmek gerek update etmek lazim soldaki bariyeri.
+
+	R ye basinca pozisyon reset oluyor ama tabi dolambacli yollar yaptik ve bazi yerlerde düz gitsek de r ye basmamiz gerektigi cikiyor 
+	bunu üzerinde bulundgmuz yoldan almanin bir yolu olmali. Ontriggerenter /stay var ama yollara collider koymadm 
+
+	kamera yine bu yerlerde yanlis acidan gösteriyo arkasina gecmeli.
+	
+	araba havadayken kumanda almasin bu cok önemli degil ama yine de bakilmali.
+
+	diger arabalara da bir ses efekti koyalim (koyduk cok sacma oldu) 
+
+22-) haritaya boosterlar ve jumplar ekliyoruz. son bir kac rütusu da yapip bir iki cctv ekleyip kapanis ekrani koyacam. bir de pause menüye restart koycam temiz bitti.
+	23.08.2020 de bunu bitirmis olalim.
+				

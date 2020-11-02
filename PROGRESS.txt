@@ -1,0 +1,328 @@
+1_) Plain olusturduk
+
+2-) Araba küp olstrduk ve rigidbody ekledik
+
+3-) Car scripti olstrduk ve translate ile hareket ettirdik arabayi
+	ayrica saha sola keydown komutlariyla giris aldik
+
+4-) Cam1 scripti ile kamera gecisi ayarladik. Burda bircok farkli metod denendi. Amac, kamera basta araba odakliyken yavas yavas arkada bir noktaya gelmesi idi
+	Bunu saglamak icin bir baslangic referans kamerasi olustrduk. Alternatif cözümlere acigiz.
+	Kamera yerine , kameranin transfrom bilgilerini aldiktan sora bos gameobject koyduk
+
+5-) Burda kameranin gecisini yumusatmak icin farkli degerler denedik bakalim nasil olacak?
+
+6-) simdi ki amac kamera bu gecisten sonra arabayi sabit mesafede takip etsin.
+	Bubiraz zorladi youubde dan video izliom.
+
+7-) Lerp doye bir fonskyon var Vector3.Lerp(bunokta,gidileceknokta,hiz) seklinde direk kamerayi ilerletmek icin mükemmel bir arac.
+	Lerp ile bu olay oldu. ratationi ama yine eski yontemle yaptik eski kodlari commentli halde kodun icinde birakiorm
+
+8-)Simdi sirada kameranin hassas oynamalari var.Nedir bu? araba geri gitme özelligi. Kamera bu durumda cok yavas kaliyor ve araba kameradan cikiyor.
+	Bu sebeple arabanin z ekseninde geri hareketine tepki verecek bir rotation bulmak gerek.
+
+9-) Simdi güzel bir bilgi elde etmis olduk;
+
+	if (Input.GetKey(KeyCode.DownArrow))
+        {
+            x = 1 - x;
+
+
+            //modifying the Vector3, based on input multiplied by speed and time
+            currentEulerAngles += new Vector3(x, y, z) * Time.deltaTime * rotationSpeed;
+
+            //moving the value of the Vector3 into Quanternion.eulerAngle format
+            currentRotation.eulerAngles = currentEulerAngles;
+
+            //apply the Quaternion.eulerAngles change to the gameObject
+            transform.rotation = currentRotation;
+        }
+
+
+bu kodu yazinca bize bir x verisi dönüyor. yani keydownarrow 0 veya 1 boolean. x= 1-x deyince x=0 oluyor.. 
+
+ifi parantezsiz yazarsak diger rotation veya rotate komutlari da ise yaramiyor. Updatede yazmistim bir ornegini calismiyordu
+parantz koyunca ifli ifadelere calisti.
+
+10-) Burda tam olarak ne oluyor ama anlamak mümkün degil simdilik o yuzden birakiyorum sonra tekrar bakacam.....
+
+11-)Vay Aq. transformun icinde LookAt komutu bulduk. bu bayagi her istedgmizi yapio.Lookat in icine obje atinca onu takipedio direk baska birsey yok.bu kadar.
+
+12-) simdi de ekstra camera koymaya calisacagiz. Yandan arabayi takip edecek tek olayi bu olsun.veya guzel bir acidan.
+
+	Bu düsünülenden basit oldu. Ikinci kamerayi arabanin childi yaptim belli bir acidan yandan bakiyo. Bir script yaptik burda yeni olan
+	örnegin rear.enabled !=rear.enabled bir oncekinin aksi olsun diye böyle yazioz. true false yazarsak extra if falan gerekecek.Bir de cameral´rin iksii de Dosplay1 de 
+	tusa basinca degisio.FPS kamera eklenebilir belki
+	
+	Burda bir diger konu 2 audio listener mevzusu buna cözüm bulacaz zor degil gibi.
+
+13-) Simdi gelelim engel,rampa ve dusmana bildigmiz konular ama biraz ugrascaz.gecmis konulari tekrar etmeye karar verdim. Burda dusmanlarla ekilesim ve
+ziplama dustukten sonra geri yönünü bulabilme önemli. araba diye koydgmuz kutu rampada uctu gitti aq.
+
+14-) Evet bugun full tekrar yaptim ve cesitli seyler ögrendim biraz guzel oldu acikcasi/12.08.2020
+
+15-)Simdi gelelim enemymove ve enemy spawna. Ilk sart su main Cameranin altinda Far:1000 vardi onu düsürdüm cunku dusman arabalarin spwan oldugunu görmemesi gerek oyuncunun
+	Araba spawn olurken y=0, x= yol ueri bir yer, z= araba.z+60 falan olmali. 
+	spawn olduktan sonra da destroy olmali. serit degstirmeden düz gelmeli.
+	Dusmanin trigeeria girince game over tabiki.
+	Ses falan eklenir belki sonra.
+
+	[06.10.2020] EnemySpawn ve EnemyBehaviour u scrap ettik yerine EnemyObject ve EnemySpawnController olacak
+
+16-) 2 gün aranin ardindan 15 agustos sabahi yeniden birlikteyz.
+	Yukarda yazilanlari kismen uyguladm. Dusmanlar güzel spawn oluyor yolun üstünde ve üstüme geliyolar. 3 4 dk lik bir oyun olsa sonlara dogru zorlassa iyi tabi.
+	Cannot instantiate objects with a parent which is persistent. New object will be created without a parent.// Söyle bir hata aldik düzeltmek gerek*****
+
+17-) Simdi yazi ekleyecez ilk basamak daha main menu yok. Sadece oyun basladi ve game over yazsin.
+	textmeshpro ya baktik biraz cool yazilar var. Kndi icinde bir sürü scene var bunlar main menü yaparken lazim olur.
+	Textneshpro kullandgmiz icin tabi nesne "Text" degil "TextMeshProUGUI" olacak ve ona uygun "using TMPro;" kodun basina girilecek
+	baslangicta textin GO deyip yok olmasi gerek bunu coroutine le yptik ardindan texti false yaptik kaza yapinca da game over diyecek simdi.
+	texti false yapinca tekrar setactive diyemedim o yüzden "" bos yaziya cevrdim
+	OntrigeerEnterdaki destroy gameobjecti false cevrdm. buralar biraz karisik oldu. Arabayi yok edince veya false yapinca dogal olarak icindeki script gidiyor.
+	imdlik mevzu halloldu ama Setactivate false yapiorm arabayi. arabanin icine ayri triggerenterkoydum gameover yazisi bu sayede cikiyor.
+	mesela arabanin icindeki text nesnesini enemybehaviour a alip degstrmeyi denedm olmadi.
+	
+18-) Simdi arabaya rotasyon ve position reset lazim cunku yanlara carptikca ekseni degisebiliyor arabnin. 
+
+	bunun icin tek tus resetle isi halledecem baska birseye simdilik gerek yok ama ilerde olabilir. Bu halloldu  
+	
+	[14.10.2020 ] - haritayi 3 alana bölecez. ilk ve ucuncu alanda bu yazi cikacak ikinci alanda cikmayacak. dolambacli olan yerde yani arabanin icinde ik collider var nerde bilmiom
+			 o yuzden _section start da iken false la baslayacak.
+
+19-) Simdi de yazinin blinki icin ugrastim ama upgrade metodu icinde aractan bilgi almamiz lazim yani biraz zor oluyo.
+	aracin pozisyonu sürekli true oldugu icin pespese cagrilio yazinin yanip sönmesi starta koymanin bir yolunu bulcaz. 
+	neyse simdilik devam. gecici cözüm bulduk.
+	[bunun icin bir yöntem var ama önemli degil blinke gerek yok 14.10.2020]
+
+20-) Simdi nitroyu yapacaz ufak bir nitro resmi indrdm googledan.
+	Buna carpinca hizlanacak. ama unuttgmuz sey su oldu araba nesneye carpinca oyun bitsin dedik. o yüzden simdi etiketleri de oyuna ekliorz.
+	enemy ye carpinca oyun bitecek. Nitroya degince istrigger sayesinde hizi artacak . genel bir bekleme corouitine yazdik cok fazla coroutine doldu heryer.
+	bu halloldu
+
+21-) ziplamayi da yaptik rigidbodye Addforce.up ile. jump etiketi atadik jump objelerine . Gerekli optimizsayon sonra yapilir
+	
+21-) Ana menü icin youtube da bir video takip ediom iyi gidiyo simdilik.16/08/2020....https://www.youtube.com/watch?v=WdCPxZ09YB0 video linki bu basit ve guzel anlatiyor.
+	Menüde tiklamaya karsilik birsey dönen her nesneye addcomponent ve button ekle dememiz gerek
+	yalniz Application.LoadLevel(...) eskimis yerine SceneManager.LoadScene("Game"); kullandik. Game oyunun oldugu scene. string olarak iyi yazmak gerek.using UnityEngine.SceneManagement;
+	sunu da eklemek gerek.
+	Görsel anlamda zayif bir anamenü oldu ama gelistrcez elbet.
+	main Menüde UI nin altina bos bir gameObject actik ve scripti buna attik.attgmiz scriptteki menu gameobjelerini de bu elemanin icindeki scripte sürükledik.
+	Main Menude start gamein /creditsin falan altina buton eklemistik addcomponentten.
+	Simdi o buttonda On CLick altina önce scripti attgmiz objeyi daha sonra sagda mainMenu altinda StartGame ve diger fonksiyonlari tek tek ekleycez.
+	On Click in sag altinda +/- var ordan + ya basmayi unutmamak gerek.
+	
+
+22-) Dedik simdi de oyunun icine bir pause menu ekleyelim böylece hem oyunu durdururuz hem de ana menüye falan döneblrz.
+	https://www.youtube.com/watch?v=JivuXdrIHK0   söyle bir video yardmyla basladik buna da
+	ELEMAN COOK HIZLI ANLATIYOR BIR SÜRÜ SEY ANLATIYOR: hepsini yazamam buraya imkansiz.
+	
+	**Burda önemli bir bilgi ;
+					Time.timescale 1 ve 0 arasinda bir degeri var. update metodlari haric geriye kalan herseyde zamani durduruyo.
+					update de durdurmuyor ama.
+					bu metodla oyunu durdurmak istiyorsak update icinde harket eden nesnelere Time.deltaTime ile carpmamiz gerek deneyelim.
+					enemy ve kamera da zaten biz bunu kullaniyormusuz. bir de arabaya ekleyelim.
+					oldu gibi. pause yapinca hepsi duruyor ama timedeltatime kucuk bir deger oldugu icin diger (base hiz ve nitro hizlarini) artirmak zorunda kaldm
+					otomatik ilerleyisi durdurmadim daha iyi gibi oyle. yavas yavas gitsin. ama cok yavas gitsin.
+					harika video aq. pause menu yapip ekrani karartmayi gösterdi en sonda animation yaptik. 
+					loopu kapattik animasyonda ve pause menüsü icindeki animatorun icinden update modunu unsclaed yaptik. tine.scale=0 dan etkilenmesisn diye.
+
+	menulere simdi bir de canlilik vermek adina, ses eklemeyi dusunuyorum.
+	Ayrica menüleri daha da guzellestirmeyi düsünüyorum.
+
+	bu kapsamda menüdeki tuslara ses atadim. simdi bunun iki yolu var biri tabi ki script ile .burda cok takilmamak icin bunu script ile yapmamaya karar verdm. ne ile yapiyorum peki
+	https://forum.unity.com/threads/how-to-play-audio-on-button-press-unity-5.340173/   burada gördgm bideo ile.
+	1- audio source acip play o awake kismini kapatiyoruz. bunun icine indrdgmiz buton tusunu atiyoruz.
+	2- ardindan button gameobjelerinin ustune tiklayip onclick kismina tekrar + diyoruz ve kendi audiosource objesini sol alta yerlestirioz
+		. sag üstte no functiona tiklioz ve audio.source>> playOneHot() diyoruz. melodimizi sag alta yerlestirioz. oluyor. 16.08.2020
+
+23-) simdi de bir skybox yapalim 
+	https://www.youtube.com/watch?v=PfGeoWWO7XA bu eleman skybox olayini anlatiyo.
+	https://www.youtube.com/watch?v=7A_iPlh3d3I su videoya bakarak bir skybox yaptik. Photshop falan da hatrlamis olduk biraz.
+	
+24-) simdi yola materyal koyalim.ardindan terrain yapmak gerek ve ona da materyal koymak gerek. skyboxtaki eksiklikleri minimize edecek biseyler yapmamiz lazim.
+	uzun ugraslar sonucunda o da halloldu. simdi biraz diger islere bakalm. 17/08/2020
+
+25-) Saga sola terrain koyduk ama ana kamera görüsü 50 de kisitli oldugu icin görünmüyordu simdi onu arttirdik bu sefer karsidan gelen dusmanlar görünüyor ona 
+	bir cözum olarak meshlerini sonradan acma yapilabilir.
+	Bu bir kenarda dursun simdi öncelik araba modelinde. kutu ve dusman yerine arabalar indirmemiz gerekiyor. arabayi hallettik . tek araba oldugu icin kutunun yerine getrdim koydum
+	hazir indrdigim assetti zaten.
+	sira dusmanlarda. sabahtan beri igrastik ama en sonunda o da oldu.
+26-) kamera cok arkada kaliyordu hizini artirrdik biraz
+
+27-) hizla ilgili bir kac düzenleme yaptiktan sonra simdi puan hesaplamaya geldi. puani enemy ye ekledimizi ikimci bir collider ile hesapliycaz.
+	 ikinci collideri dusman prefabinin icine koydugmz  bos gameobjecte ekledim onu EnemyPoint diye tag'ledim. CarMove un icine yazdim Ontrigger da points++ olsun diye.
+	Puan sistemini daha da gelistrimek adina nitronun veya rampanin da oraya birtakim puanlar koyabilirz. simdilik oyun güzel. rampa ekledik rampada hizlandirici ekledik.
+	buralara extra puan ekleyebilirz. ekstra bir iyilestirme gerekebilir bu atlama ziplama kismina. Aksam seansi ile devam ediyoruz. toplamda kac 
+	puan aldigimizi gösteren text ekliyorum. burda da tabiki güzellestirmeler olmali. puani ekledik sag üstte duruyor. simdi bu puani dengeli mantikli bir sekilde artirmak gerek
+	bu noktada oyun sonu puani gösteren ve oyun bitinc restart veya quit secnegi sunan iki tus ekliyorum yeni bir panele.
+
+	void Update()
+    {
+        if (!car.activeSelf)
+        {
+            _update++;
+            if (_update == 1)
+            {
+                print("aktif degil");
+            }
+            
+        }
+    }
+
+		bu kod bayagi iyi bu sayede update icinde bir kereye mahsus fonksiyon cagirabilioz.
+
+	SceneManager.LoadScene(SceneManager.GetActiveScene().name); restart kodu önemli
+	burayi da hallettik.  ****** 18/08/2020
+
+28-) carpmaya ragmen bazen gameover olmuyor bunu düzeltmek gerek simdi. onu da düzelttik iyi oldu. bayagi ugrastik gametext prefab derken herseyi araba sriptine attik yine.
+
+
+29-) yarin arabaya nitro suresinde neon isigi.
+	harita genisletme ve büyütme
+30-) Trail renderer diye bir component var onunla bu is bayagi kolay olacak gibi bakalim.
+	https://www.youtube.com/watch?v=_TcEfIXpmRI  su videoda aciklamalar var. Bu isi de hallettik sabahtan beri Trailrendereri start metodunun da icinde yzdgm icin olmuyormus aq.
+	velhasil oraya //_neon = GetComponentInChildren<TrailRenderer>(); su kodu yazmistim. olmustu ama öteki far icin ikinci neonu ekleyince isler karisti.
+	bir liste olusturmak gerekti onu tam beceremedim ou da ögrenebilirz. 
+	onun yerine	 _neon = this.transform.Find("CarNeon-left").GetComponent<TrailRenderer>();
+       			 _neon1 = this.transform.Find("CarNeon-right").GetComponent<TrailRenderer>(); su iki kodu yazarak hallettik.
+	daha kolayi dohrudan public gameobject atamak ile olurdu ama bunud a ögrenmis olduk.
+
+31-) Gameover olduktan sonra yazinin rtaya kaymasi lazim puanini görsün ölen adam.halloldu bu simdi lerple deneyecez.lerple de oldu ama kayma degil dogrudan geliyor
+	bunu ilerde duzelteblrz
+
+32-) Simdi arabanin colliderini hazir paketten gelen yapalim.su an box collider var ana objenin. bu tam olarak olmadi 
+	arabaya rigidbody ekleyince ekstra asagiya dusuyor. kendi icinde bayagi collider var zaten onlari kurcalamak da istemedim.
+
+33-) 3. bir kamera ekledim (daha fazla eklenebilir) icerden gösteren arabanin icine bir de isik ekledim icerisi de görünsün diye.
+	sikinti su araba kaza yapinca oyun bitince yani araba pasif konuma düstügü icin childobjeleri de pasif oluyor ve displayde görüntü kalmiyor.
+	bu bug i düzeltmenin yolu kamralari arabaya sabitlememek aslinda icerden cikarip main camde oldugu gibi yapablrz.
+	ama yine de denedim öteki yollari.sonunda bu da oldu carmoveda enemyye carpinca main camera aktive olsun dedik.
+
+34-) günün son eklentisi olarak thunderbolt yapalim dedik. 100 puanda bir thunderbolt gitsin. 
+	buna bir simsek izi ekledik daha güzel yapilabilir bu bir de sadece arkadan degil heryerden simsek cikarabilir. -----------
+	ses de ciksin su an yok---------
+	biraz ugrastik ama oldu birseyler. 
+	kodu yazarken addexplosionforce diye birsey gördüm simdi buna bakacam https://www.youtube.com/watch?v=XMDfhHyOacM
+	mükemmel oldu lan ahahaha 20.08.2020
+	simdi bu thunderboltu instantiate yapacaz o kadr.
+	100 puanda bir atalim. cok da atmayalim. burda kaldim. bayagi ilerleme kaydettik.20.08.2020
+
+35-) 21.08.2020 budün önce thunderbolta ses ekleyelim sinir getirelim sonra parical olayina bakacam.sinir getirdik süreye bagli. simdi partikal neymis hadi bakalm
+	sicak gecen bir günün ardindan bunu da hallettik diyelim.
+
+36-) dün partical isini ögrendikten sonra simdi tünel yapalim dedik bu arada haritayi genisletiyordum. ProBuilder and Polybrush isimli iki paket yardimiyla oluyormus bu olay. BUGUN DE COK BAKAMADM 
+	yarina artik bahanemiz yok. sonra da sinava yogunlasmam gerek. probuilder sayesinde bir tünel yaptik öyle veya böyle oldu iste ilerde daha cok nakmak gerek 22-08.2020
+
+*********37-) cözülemeyen problemler listelendi.
+						Dusmanlar hep soldaki bariyerden x i nirengi aliyor onu da bir degistirmek gerek update etmek lazim soldaki bariyeri.
+
+						***
+
+						R ye basinca pozisyon reset oluyor ama tabi dolambacli yollar yaptik ve bazi yerlerde düz gitsek de r ye basmamiz gerektigi cikiyor 
+						bunu üzerinde bulundgmuz yoldan almanin bir yolu olmali. Ontriggerenter /stay var ama yollara collider koymadm 
+	
+						kamera yine bu yerlerde yanlis acidan gösteriyo arkasina gecmeli.
+	
+						araba havadayken kumanda almasin bu cok önemli degil ama yine de bakilmali.
+
+						pointcalculator scripti gereksiz oldu ama aslinda onun ben tüm puanlari hesaplamasini istiom
+			
+						carmove scripti corbaya döndü onu fonksiyonlara mi bölsek??
+
+38-) pause a restart menüsü eklendi. Komut su, SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); buildindex arka plan resmiyle alakali olmasa da olur.
+
+39-) haritaya particle , jump ve boost lar ekledik. bunlarla ilgili optimizasyolar yapildi. 
+
+40-) bitis ekrani ve training scene i ekleyelim bir de.
+
+41-) 01.09.2020 yusuf abiden haber bekliyoz tekrar bir gözden gecircez olasi optimizasyon ve cözümleri konuscaz
+
+42-) 12.09.2020 günü yusuf abiyle koustuk enemy behaviour konusunu simdi ordan aldgmz bilgiler ve calismalar isiginda DOTween ile düsmanlari halledecez.
+	Enemy Behaviour tamamen scrap edilcek(zaten tek satirdi) enemy spawn da tamamen scrap edilcek.
+	Kodlari anlamak cok önemli simdi kodlari anlayalim.
+	
+--------DOtween icinde verdigimiz tüm komutlar Tween classi altinda bir degiskene atanabilir 
+		anim = transform.DOPath(_path, 10f); dusmanin _path yönünde hareketini 10 saniye boyunca yaptirio.
+	bunu enemy nin icine koydgmuz bir scriptte EnemyObject adli kodda StartMovement fonksiyonuna ya yazdik
+	burdaki _path ne peki? Instance in yani dusmanin gidecegi nokta. peki onu nasil bulduk o da iste EEnemySpawnControllerda
+
+--------Bu kod biraz daha uzun o yüzden parca parca gidelim
+	
+	1- Arabalar bir noktadan ötekine gitmeli. Biz ne kadar nokta koyarsak (EmptyGameobject) o kadar cok güzergah üretebilirz.
+		baslangici da böyle yaptik. bir arac dogunca bir noktadan digerine hareket edecek
+		isin tricky parti burasi bence;
+
+	[SerializeField] private List<Transform> _path1;
+   	 [SerializeField] private List<Transform> _path2;
+    	[SerializeField] private List<Transform> _path3;    söyle 3 tane path olstrduk bunlar transform listesi
+							    bir patha ne kadr cok cocuk transform koyarsan o kadr cok 
+							    cesitli güzergah elde edeblrsin. biz iki tane koyduk sadece
+							     a dan b ye gidiyoruz ama bunu artircam.
+	
+	 private Vector3[] _wayPoint1;
+   	 private Vector3[] _wayPoint2;
+   	 private Vector3[] _wayPoint3; 3 tane de waypoint koyduk bunlar vektör.
+	
+	private void SetWaypoints()
+    {
+        _wayPoint1 = new Vector3[_path1.Count-1];   // olay aslinda cok basit.2 path(nokta diyelim) dan bir dogru(waypoint gecer.)
+        _wayPoint2 = new Vector3[_path2.Count-1];   
+        _wayPoint3 = new Vector3[_path3.Count-1];
+
+
+        for (int i = 1; i < _path1.Count; i++)       //// 5 nokta koyarsak mesela _path1 in altina 4 vektörümüz olacak. yani 4 güzergah.biz 2 koyduk yusuf abiyle
+        {
+            _wayPoint1[i - 1] = _path1[i].position;
+            _wayPoint2[i - 1] = _path2[i].position;
+            _wayPoint3[i - 1] = _path3[i].position;
+        }
+    }
+
+	2- pathleri olstrduk ve iclerine noktalari koyduktan sonra kod zaten bze güzergahlari cikardi.
+		simdi ikinci kisma gecelim. Dusmanlarin dogmasini baslatacak kod. Onu haritanin basina koydgmz bir collidera koyduk.
+		EnemySpawnCollider dedigimiz bu cisime Player etkietli araba girince coroutine basliyor.
+		Coroutune kolay merak etme. 1-4 arasi (1,2,3) bir random sayi olstrlp spawnpath seciliyor.
+		orda switch(spawnpathli kisimda _path1[0] dogus noktasi, _waypoint de güzergah. Ama neden _waypoint[0] degil cunku. 
+		waypoint[0] iki nokta arasi vektör biz 4 nokta koyarsak 3 vektörümüz olacak ve DOpath tamamini takip edecek.
+	
+	3- simdi dusmanin spawn etmeye geldi. _enemypool adli bir gameobject listesi olstrduk awakede
+		coroutine icinde de enemy adli gameobject
+		instantiate ettgmz aslinda enemy gameobject. ama nesne olarak _enemyPrefab kullaniyoruz.
+	
+
+		GameObject enemy = new GameObject(); 
+
+            switch (spawnPath)
+            {
+                case 1:
+                    enemy = Instantiate(_enemyPrefab, _path1[0].position,Quaternion.identity);
+                    enemy.GetComponent<EnemyObject>().SetPath(_wayPoint1).StartMoveent();
+                    _enemyPool.Add(enemy);
+		.
+		.
+		.    // böyle devam ediyor kod. en son da bekleme var klasik.
+
+	4- dusmansiz bölgeler icin de stopcoroutune yazdik
+		if (player != null && Vector3.Distance(_path1[0].position, player.transform.position) < 5)
+        {
+            StopCoroutine(coroutine);
+        }  dusmanin dogdugu noktaya 5 birim yaklasirsak düsman artik dogmayack.
+	
+
+--------simdi geldi test etmeye ve evet kodda ufak bir iki oynama ile istedgmiz oldu
+
+43-) dusman bu yeni halinde yamuk doguyor obu düzeltelim.
+	instantiate icinde iken rotasyon prefabdan aldik.
+	arabalar yerden biraz yüksek doguyor cunku _path icindeki noktalar havada asili. onu düzeltmek gerek. /(sürekli arabanin rotasyonunu kaydeden bir rotasyonobjesi?)
+	simdilik halledildi. prefabdan degil pathden alacak rotasyou.(14.09.2020)
+
+44-) simdi geldi sira thunderbolt un olaya arabalar rigidbodysi neden yok?
+	onun icin yusuf abiyle yaptgmiz ksiimda gözden kacrdgmiz yer thunderboltta enemy olarak rigidbody tanimladik biz.
+	obtriggerenter in icine o yüzden other.Gameobject yazcaz.
+	onu hallettik simdi ama saga sola ucusma olayini halletmedik ona bakalm.o da oldu
+	bugünlük burasi yeter.(15.092020)--Dotween caliscaz
+	
+
+
+
+
+
